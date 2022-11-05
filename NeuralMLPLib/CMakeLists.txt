@@ -12,4 +12,5 @@ include_directories("../" "${LIBRARY_BASE}/NVLib")
 # Create Library
 add_library(NeuralMLPLib STATIC
     ArgUtils.cpp
+    ScoreUtils.cpp
 )

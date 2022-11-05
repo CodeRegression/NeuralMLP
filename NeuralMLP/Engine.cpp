@@ -40,5 +40,10 @@ Engine::~Engine()
  */
 void Engine::Run()
 {
-    // TODO: Execution Logic
+    _logger->Log(1, "Loading input file");
+    auto dataPath = ArgUtils::GetString(_parameters, "input"); auto fields = vector<string>();
+    Mat data = NVL_AI::ScoreUtils::LoadARFF(dataPath, fields);
+    if (data.empty()) throw runtime_error("DAta load failed");
+    _logger->Log(1, "Extracted %i records with %i fields", data.rows, fields.size());
+
 }
