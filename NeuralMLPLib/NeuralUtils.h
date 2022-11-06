@@ -27,7 +27,7 @@ namespace NVL_AI
 	public:
 		static void WriteData(const string& path, Mat& data);
 		static TrainData * LoadData(const string& path);
-		static Ptr<ml::ANN_MLP> CreateNetwork(TrainData * data, const string structure);
+		static Ptr<ml::ANN_MLP> CreateNetwork(const string structure);
 	private:
 		static Mat LoadARFF(const string& path, vector<string>& fieldNames);
 	};

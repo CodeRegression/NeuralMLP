@@ -25,7 +25,7 @@ add_executable(NeuralMLPTests
 )
 
 # Add link libraries
-target_link_libraries(NeuralMLPTests NeuralMLPLib NVLib ${OpenCV_LIBS} UnitTestLib GTest::Main)
+target_link_libraries(NeuralMLPTests NeuralMLPLib NVLib ${OpenCV_LIBS} uuid UnitTestLib GTest::Main)
 
 # Find the associated unit tests
 gtest_discover_tests(NeuralMLPTests)

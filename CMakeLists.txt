@@ -31,7 +31,7 @@ set_target_properties(NVLib PROPERTIES
 
 # Add opencv to the solution
 find_package( OpenCV REQUIRED)
-include_directories( ${OpenCV_INCLUDE_DIRS} )
+include_directories( ${OpenCV_INCLUDE_DIRS})
 
 # Add the available subfolders
 add_subdirectory(NeuralMLPLib)

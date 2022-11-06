@@ -43,11 +43,10 @@ TrainData * NeuralUtils::LoadData(const string& path)
 
 /**
  * @brief Create the network that we are using
- * @param data The data that we are learning with the network
  * @param structure The structure of the given network
  * @return The resultant network as output
  */
-Ptr<ml::ANN_MLP> NeuralUtils::CreateNetwork(TrainData * data, const string structure) 
+Ptr<ml::ANN_MLP> NeuralUtils::CreateNetwork(const string structure) 
 {
 	throw runtime_error("Not Implemented");
 }

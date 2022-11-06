@@ -16,7 +16,7 @@ add_executable(NeuralMLP
 )
 
 # Add link libraries                               
-target_link_libraries(NeuralMLP NeuralMLPLib  NVLib ${OpenCV_LIBS})
+target_link_libraries(NeuralMLP NeuralMLPLib  NVLib ${OpenCV_LIBS} uuid)
 
 # Copy Resources across
 add_custom_target(resource_copy ALL
