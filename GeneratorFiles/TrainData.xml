@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<class>
+<namespace>NVL_AI</namespace>
+<solution>NeuralMLPLib</solution>
+<name>TrainData</name>
+<description>The training data for training the neural network</description>
+
+<includes>
+    <include name="iostream" namespace="std" local="false" />
+    <include name="opencv2/opencv.hpp" namespace="cv" local="false" />
+</includes>
+
+<variables>
+    <variable type="Mat" name="inputs" code="10" />
+    <variable type="Mat" name="outputs" code="10" />
+</variables>
+
+<constructors>
+
+    <constructor type="auto" inline="true" />
+    
+</constructors>
+
+</class>

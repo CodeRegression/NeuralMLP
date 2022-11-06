@@ -21,7 +21,7 @@ set_target_properties(UnitTestLib PROPERTIES
 
 # Create the executable
 add_executable(NeuralMLPTests
-    Tests/Example_Tests.cpp
+    Tests/NeuralUtils_Tests.cpp
 )
 
 # Add link libraries

@@ -6,11 +6,54 @@
 // @date: 2022-09-26
 //--------------------------------------------------
 
-#include "ScoreUtils.h"
+#include "NeuralUtils.h"
 using namespace NVL_AI;
 
 //--------------------------------------------------
-// Load
+// Write ARFF File
+//--------------------------------------------------
+
+/**
+ * @brief Write the given data to disk
+ * @param path The path that we are writing to
+ * @param data The data that we are writing
+ */
+void NeuralUtils::WriteData(const string& path, Mat& data) 
+{
+	throw runtime_error("Not Implemented");
+}
+
+//--------------------------------------------------
+// Load Data
+//--------------------------------------------------
+
+/**
+ * @brief Write the give data to disk
+ * @param path The path that we are writing to
+ * @return TrainData* The given set of training data
+ */
+TrainData * NeuralUtils::LoadData(const string& path) 
+{
+	throw runtime_error("Not Implemented");
+}
+
+//--------------------------------------------------
+// Create Network
+//--------------------------------------------------
+
+/**
+ * @brief Create the network that we are using
+ * @param data The data that we are learning with the network
+ * @param structure The structure of the given network
+ * @return The resultant network as output
+ */
+Ptr<ml::ANN_MLP> NeuralUtils::CreateNetwork(TrainData * data, const string structure) 
+{
+	throw runtime_error("Not Implemented");
+}
+
+//--------------------------------------------------
+// Helpers
 //--------------------------------------------------
 
 /**
@@ -19,7 +62,7 @@ using namespace NVL_AI;
  * @param fieldNames The names of the fields that we are loading
  * @return Mat Returns a Mat
  */
-Mat ScoreUtils::LoadARFF(const string& path, vector<string>& fieldNames)
+Mat NeuralUtils::LoadARFF(const string& path, vector<string>& fieldNames)
 {
 	// Open the file
 	auto reader = ifstream(path);

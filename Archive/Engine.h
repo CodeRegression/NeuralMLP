@@ -14,7 +14,7 @@ using namespace std;
 #include <NVLib/Logger.h>
 
 #include <NeuralMLPLib/ArgUtils.h>
-#include <NeuralMLPLib/NeuralUtils.h>
+#include <NeuralMLPLib/ScoreUtils.h>
 
 namespace NVL_App
 {

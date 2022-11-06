@@ -1,5 +1,5 @@
 //--------------------------------------------------
-// Unit Tests for Arguments
+// Unit Tests for NeuralUtils
 //
 // @author: Wild Boar
 //
@@ -13,9 +13,17 @@
 //--------------------------------------------------
 
 /**
- * @brief Confirm that the arguments are initialized correct
+ * @brief Confirm that the data has been loaded correctly
  */
-TEST(Example_Test, test_example)
+TEST(NeuralUtils_Test, test_data_load)
 {
-	ASSERT_EQ(1, 1);
+	FAIL() << "Not yet implemented";
+}
+
+/**
+ * @brief Confirm network initialization
+ */
+TEST(NeuralUtils_Test, confirm_network_initialization)
+{
+	FAIL() << "Not yet implemented";
 }
