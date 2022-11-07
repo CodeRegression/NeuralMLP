@@ -200,3 +200,27 @@ Ptr<ml::ANN_MLP> NeuralUtils::CreateNetwork(const string structure, int inputCou
  
 	return result;
 }
+
+//--------------------------------------------------
+// Retrieve score
+//--------------------------------------------------
+
+/**
+ * @brief Calculate the score
+ * @param data The data that we are getting the score for
+ * @param network The associated neural network
+ * @return double The value that the score includes
+ */
+double NeuralUtils::GetScore(TrainData * data, Ptr<ml::ANN_MLP>& network) 
+{
+	Mat result; network->predict(data->GetInputs(), result, ml::StatModel::RAW_OUTPUT);
+
+	auto score = 0.0; auto actual = (float *) result.data; auto expected = (float *) data->GetOutputs().data;
+	for (auto row = 0; row < result.rows; row++) 
+	{
+		auto diff = abs(actual[row] - expected[row]);
+		score += diff;
+	}
+
+	return score;
+}

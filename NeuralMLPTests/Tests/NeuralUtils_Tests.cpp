@@ -79,6 +79,42 @@ TEST(NeuralUtils_Test, confirm_network_initialization)
 	ASSERT_EQ(input[3], 1);
 }
 
+/**
+ * Confirmation of score calculation
+ */
+TEST(NeuralUtils_Test, get_score) 
+{
+	// Create some test data
+	Mat data = Mat_<double>::zeros(4, 3);
+	Insert(data, 0, vector<double> { 0, 0, 0});
+	Insert(data, 1, vector<double> { 0, 1, 1});
+	Insert(data, 2, vector<double> { 1, 0, 1});
+	Insert(data, 3, vector<double> { 1, 1, 0});
+
+	// Write the test data to disk
+	if (NVLib::FileUtils::Exists("test.arff")) NVLib::FileUtils::Remove("test.arff");
+	NVL_AI::NeuralUtils::WriteData("test.arff", "test", "Unit test dataset file", data);
+
+	// Load the test data up again
+	auto trainData = NVL_AI::NeuralUtils::LoadData("test.arff");
+
+	// Get the network
+	auto network = NVL_AI::NeuralUtils::CreateNetwork("3,3", 2);
+
+	// Add logic here to reset the weights
+	auto tdata = ml::TrainData::create(trainData->GetInputs(), ml::ROW_SAMPLE, trainData->GetOutputs());
+    network->train(tdata);
+
+	// Get the score
+	auto score = NVL_AI::NeuralUtils::GetScore(trainData, network);
+
+	// Validate
+	ASSERT_NEAR(score, 2, 1e-1);
+
+	// Free working variables
+	delete trainData;
+}
+
 //--------------------------------------------------
 // Helper Methods
 //--------------------------------------------------
