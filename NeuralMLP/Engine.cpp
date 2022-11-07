@@ -28,7 +28,11 @@ Engine::Engine(NVLib::Logger* logger, NVLib::Parameters* parameters)
 
     _logger->Log(1, "Setup the given network");
     auto networkConfig = ArgUtils::GetString(parameters, "ann_config");
-    _network = NVL_AI::NeuralUtils::CreateNetwork(networkConfig, _trainData->GetInputs().cols, _trainData->GetOutputs().cols);
+    _learnRate = ArgUtils::GetDouble(parameters, "learn_rate");
+    _network = NVL_AI::NeuralUtils::CreateNetwork(networkConfig, _learnRate, _trainData->GetInputs().cols, _trainData->GetOutputs().cols);
+    _iterations = ArgUtils::GetInteger(parameters, "iterations");
+    _outputPath = ArgUtils::GetString(parameters, "output");
+
 }
 
 /**
@@ -49,6 +53,28 @@ Engine::~Engine()
  */
 void Engine::Run()
 {
-    _logger->Log(1, "Execution not yet implemented");
+    _logger->Log(1, "Initialize Training");
+    auto train = ml::TrainData::create(_trainData->GetInputs(), ml::ROW_SAMPLE, _trainData->GetOutputs());
+	_network->train(train);
 
+	_logger->Log(1, "Starting training");
+	auto bestScore = NVL_AI::NeuralUtils::GetScore(_trainData, _network);
+    _logger->Log(1, "Initial Score: %f", bestScore);
+    for (auto i = 0; i < _iterations; i++) 
+	{
+		_network->train(train,  ml::ANN_MLP::UPDATE_WEIGHTS);
+		auto current = NVL_AI::NeuralUtils::GetScore(_trainData, _network);
+		_logger->Log(1, "Iteration %i: %f", i, current);
+
+        if (current < bestScore) 
+        {
+            _logger->Log(1, "Best result so far, saving");
+            NVL_AI::NeuralUtils::Save(_outputPath, _network);
+            bestScore = current;
+            if (bestScore < 1e-4) 
+            {
+                _logger->Log(1, "Low score found, terminating!");
+            }
+        }
+	}
 }

@@ -26,6 +26,9 @@ namespace NVL_App
 
 		NVL_AI::TrainData * _trainData;
 		Ptr<ml::ANN_MLP> _network;
+		int _iterations;
+		string _outputPath;
+		double _learnRate;
 	public:
 		Engine(NVLib::Logger* logger, NVLib::Parameters * parameters);
 		~Engine();

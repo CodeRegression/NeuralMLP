@@ -175,7 +175,7 @@ Mat NeuralUtils::LoadARFF(const string& path, vector<string>& fieldNames)
  * @param structure The structure of the given network
  * @return The resultant network as outputs
  */
-Ptr<ml::ANN_MLP> NeuralUtils::CreateNetwork(const string structure, int inputCount , int outputCount) 
+Ptr<ml::ANN_MLP> NeuralUtils::CreateNetwork(const string structure, double learnRate, int inputCount , int outputCount) 
 {
 	// Break the parameter set
 	auto parts = vector<string>(); NVLib::StringUtils::Split(structure, ',', parts);
@@ -194,9 +194,9 @@ Ptr<ml::ANN_MLP> NeuralUtils::CreateNetwork(const string structure, int inputCou
 
     auto result = ml::ANN_MLP::create();
     result->setLayerSizes(layers);
-    result->setActivationFunction(ml::ANN_MLP::SIGMOID_SYM, 0, 0);
-    result->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 100, 0.0001));
-    result->setTrainMethod(ml::ANN_MLP::BACKPROP, 0.0001);
+    result->setActivationFunction(ml::ANN_MLP::ActivationFunctions::SIGMOID_SYM, 0, 0);
+    result->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 500, 1e-3));
+    result->setTrainMethod(ml::ANN_MLP::BACKPROP, learnRate);
  
 	return result;
 }
@@ -213,7 +213,7 @@ Ptr<ml::ANN_MLP> NeuralUtils::CreateNetwork(const string structure, int inputCou
  */
 double NeuralUtils::GetScore(TrainData * data, Ptr<ml::ANN_MLP>& network) 
 {
-	Mat result; network->predict(data->GetInputs(), result, ml::StatModel::RAW_OUTPUT);
+	Mat result; network->predict(data->GetInputs(), result);
 
 	auto score = 0.0; auto actual = (float *) result.data; auto expected = (float *) data->GetOutputs().data;
 	for (auto row = 0; row < result.rows; row++) 
@@ -223,4 +223,20 @@ double NeuralUtils::GetScore(TrainData * data, Ptr<ml::ANN_MLP>& network)
 	}
 
 	return score;
+}
+
+//--------------------------------------------------
+// Save the network to disk
+//--------------------------------------------------
+
+/**
+ * @brief Add the logic to save the network to disk
+ * @param path The path that we are saving
+ * @param network The network that is being saved
+ */
+void NeuralUtils::Save(const string& path, Ptr<ml::ANN_MLP>& network) 
+{
+	auto writer = FileStorage(path, FileStorage::WRITE | FileStorage::FORMAT_XML);
+	network->write(writer);
+	writer.release();
 }

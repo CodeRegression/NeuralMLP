@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <opencv_storage>
     <input>Input/problem.arff</input>
-    <ann_config>"3,3"</ann_config>
+    <ann_config>"60,60,60"</ann_config>
+    <iterations>"10000"</iterations>
+    <output>"Output/model.xml"</output>
+    <learn_rate>"0.01"</learn_rate>
 </opencv_storage>

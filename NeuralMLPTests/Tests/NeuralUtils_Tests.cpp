@@ -65,7 +65,7 @@ TEST(NeuralUtils_Test, test_data_load)
 TEST(NeuralUtils_Test, confirm_network_initialization)
 {
 	// Get the network
-	auto network = NVL_AI::NeuralUtils::CreateNetwork("3,3", 2);
+	auto network = NVL_AI::NeuralUtils::CreateNetwork("3,3", 1e-1, 2);
 	Mat layerSizes = network->getLayerSizes();
 	auto input = (int *) layerSizes.data;
 
@@ -99,7 +99,7 @@ TEST(NeuralUtils_Test, get_score)
 	auto trainData = NVL_AI::NeuralUtils::LoadData("test.arff");
 
 	// Get the network
-	auto network = NVL_AI::NeuralUtils::CreateNetwork("3,3", 2);
+	auto network = NVL_AI::NeuralUtils::CreateNetwork("3,3", 1e-2, 2);
 
 	// Add logic here to reset the weights
 	auto tdata = ml::TrainData::create(trainData->GetInputs(), ml::ROW_SAMPLE, trainData->GetOutputs());
@@ -110,6 +110,45 @@ TEST(NeuralUtils_Test, get_score)
 
 	// Validate
 	ASSERT_NEAR(score, 2, 1e-1);
+
+	// Free working variables
+	delete trainData;
+}
+/**
+ * Validate Training
+ */
+TEST(NeuralUtils_Test, test_training) 
+{
+	// Create some test data
+	Mat data = Mat_<double>::zeros(4, 3);
+	Insert(data, 0, vector<double> { 0, 0, 0});
+	Insert(data, 1, vector<double> { 0, 1, 1});
+	Insert(data, 2, vector<double> { 1, 0, 1});
+	Insert(data, 3, vector<double> { 1, 1, 0});
+
+	// Write the test data to disk
+	if (NVLib::FileUtils::Exists("test.arff")) NVLib::FileUtils::Remove("test.arff");
+	NVL_AI::NeuralUtils::WriteData("test.arff", "test", "Unit test dataset file", data);
+
+	// Load the test data up again
+	auto trainData = NVL_AI::NeuralUtils::LoadData("test.arff");
+
+	// Get the network
+	auto network = NVL_AI::NeuralUtils::CreateNetwork("10,100,10", 1e-1, 2);
+	auto train = ml::TrainData::create(trainData->GetInputs(), ml::ROW_SAMPLE, trainData->GetOutputs());
+	network->train(train);
+
+	// Get the score
+	for (auto i = 0; i < 500; i++) 
+	{
+		network->train(train,  ml::ANN_MLP::UPDATE_WEIGHTS);
+		auto current = NVL_AI::NeuralUtils::GetScore(trainData, network);
+		cout << "Current Score: " << current << endl;
+	}
+
+	// Validate
+	auto score = NVL_AI::NeuralUtils::GetScore(trainData, network);
+	ASSERT_NEAR(score, 0, 1e-1);
 
 	// Free working variables
 	delete trainData;
