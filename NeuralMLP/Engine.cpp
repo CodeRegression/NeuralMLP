@@ -21,6 +21,14 @@ using namespace NVL_App;
 Engine::Engine(NVLib::Logger* logger, NVLib::Parameters* parameters) 
 {
     _logger = logger; _parameters = parameters;
+
+    _logger->Log(1, "Loading training data");
+    auto dataPath = ArgUtils::GetString(parameters, "input");
+    _trainData = NVL_AI::NeuralUtils::LoadData(dataPath);
+
+    _logger->Log(1, "Setup the given network");
+    auto networkConfig = ArgUtils::GetString(parameters, "ann_config");
+    _network = NVL_AI::NeuralUtils::CreateNetwork(networkConfig, _trainData->GetInputs().cols, _trainData->GetOutputs().cols);
 }
 
 /**
@@ -28,7 +36,8 @@ Engine::Engine(NVLib::Logger* logger, NVLib::Parameters* parameters)
  */
 Engine::~Engine() 
 {
-    delete _parameters;
+    delete _parameters; 
+    if (_trainData != nullptr) delete _trainData;
 }
 
 //--------------------------------------------------
@@ -40,5 +49,6 @@ Engine::~Engine()
  */
 void Engine::Run()
 {
-    _logger->Log(1, "Main Logic goes here");
+    _logger->Log(1, "Execution not yet implemented");
+
 }

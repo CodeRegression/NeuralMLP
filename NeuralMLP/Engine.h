@@ -23,6 +23,9 @@ namespace NVL_App
 	private:
 		NVLib::Parameters * _parameters;
 		NVLib::Logger* _logger;
+
+		NVL_AI::TrainData * _trainData;
+		Ptr<ml::ANN_MLP> _network;
 	public:
 		Engine(NVLib::Logger* logger, NVLib::Parameters * parameters);
 		~Engine();

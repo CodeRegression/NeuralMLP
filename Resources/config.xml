@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
 <opencv_storage>
-    <input>Input/data.arff</input>
+    <input>Input/problem.arff</input>
+    <ann_config>"3,3"</ann_config>
 </opencv_storage>
